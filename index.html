@@ -1,0 +1,717 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My English Learning Hub</title>
+    <style>
+        :root {
+            --primary-color: #2d358f;
+            --secondary-color: #e51b24;
+            --accent-color: #f9a11b;
+            --light-bg: #f5f5f5;
+            --text-color: #333;
+            --text-light: #666;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: var(--light-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+        
+        header {
+            background-color: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 0;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--primary-color);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo span {
+            color: var(--secondary-color);
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+            position: relative;
+        }
+        
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            padding: 8px 0;
+            position: relative;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+        
+        .nav-links a.active {
+            color: var(--primary-color);
+            font-weight: 600;
+        }
+        
+        .nav-links a.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--accent-color);
+            border-radius: 3px 3px 0 0;
+            animation: underline 0.3s ease-out;
+        }
+        
+        @keyframes underline {
+            from { transform: scaleX(0); }
+            to { transform: scaleX(1); }
+        }
+        
+        main {
+            min-height: calc(100vh - 160px);
+            padding: 40px 0;
+        }
+        
+        .page {
+            display: none;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+        
+        .page.active {
+            display: block;
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        h1 {
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 36px;
+        }
+        
+        h2 {
+            color: var(--secondary-color);
+            margin: 30px 0 15px;
+            font-size: 24px;
+        }
+        
+        h3 {
+            color: var(--primary-color);
+            margin-bottom: 15px;
+            font-size: 20px;
+        }
+        
+        p {
+            margin-bottom: 15px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+            margin-bottom: 25px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .grammar-list, .vocab-list, .detail-list {
+            list-style-position: inside;
+            margin-left: 15px;
+            margin-bottom: 15px;
+        }
+        
+        .grammar-list li, .vocab-list li, .detail-list li {
+            margin-bottom: 10px;
+            padding-left: 10px;
+        }
+        
+        .grammar-list li::marker, .vocab-list li::marker {
+            color: var(--accent-color);
+        }
+        
+        .detail-list li {
+            margin-bottom: 15px;
+        }
+        
+        .example {
+            background-color: #f8f9fa;
+            border-left: 4px solid var(--accent-color);
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .btn {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            margin-top: 10px;
+        }
+        
+        .btn:hover {
+            background-color: var(--primary-color);
+            transform: translateY(-2px);
+        }
+        
+        footer {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px 0;
+            text-align: center;
+        }
+        
+        footer p {
+            margin-bottom: 0;
+        }
+        
+        /* Animation classes */
+        .fade-in {
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        .slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+            opacity: 0;
+        }
+        
+        @keyframes slideUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .delay-1 { animation-delay: 0.1s; }
+        .delay-2 { animation-delay: 0.2s; }
+        .delay-3 { animation-delay: 0.3s; }
+        .delay-4 { animation-delay: 0.4s; }
+        
+        /* Sub-page navigation */
+        .sub-nav {
+            display: flex;
+            margin-bottom: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+        
+        .sub-nav a {
+            padding: 8px 16px;
+            margin-right: 10px;
+            background-color: white;
+            border-radius: 20px;
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+        
+        .sub-nav a:hover, .sub-nav a.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        /* Collapsible sections */
+        .collapsible {
+            cursor: pointer;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--primary-color);
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .collapsible:hover {
+            background-color: #f0f0f0;
+        }
+        
+        .collapsible:after {
+            content: '+';
+            font-size: 20px;
+            color: var(--accent-color);
+            font-weight: bold;
+            margin-left: 10px;
+        }
+        
+        .collapsible.active:after {
+            content: '-';
+        }
+        
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.2s ease-out;
+            background-color: white;
+            border-radius: 0 0 8px 8px;
+            margin-bottom: 20px;
+        }
+        
+        .content-inner {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <a href="#" class="logo">Learn<span>English</span></a>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="home">Homepage</a></li>
+                    <li><a href="#" class="nav-link" data-page="grammar">Grammar</a></li>
+                    <li><a href="#" class="nav-link" data-page="vocabulary">Vocabulary</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main class="container">
+        <!-- Homepage -->
+        <section id="home" class="page active">
+            <h1 class="fade-in">Welcome to LearnEnglish</h1>
+            <div class="card slide-up">
+                <h2>Start your English learning journey</h2>
+                <p>Improve your English skills with our free online resources. Whether you're learning English for work, study, or travel, we have materials to help you achieve your goals.</p>
+            </div>
+            
+            <div class="card slide-up delay-1">
+                <h2>Why learn with us?</h2>
+                <ul class="grammar-list">
+                    <li>High-quality learning materials</li>
+                    <li>Clear explanations and examples</li>
+                    <li>Practical exercises to test your understanding</li>
+                    <li>Designed by English language experts</li>
+                </ul>
+            </div>
+            
+            <div class="card slide-up delay-2">
+                <h2>Get started</h2>
+                <p>Use the navigation menu at the top to explore our grammar and vocabulary resources. New content is added regularly, so check back often!</p>
+            </div>
+        </section>
+        
+        <!-- Grammar Main Page -->
+        <section id="grammar" class="page">
+            <h1 class="fade-in">English Grammar</h1>
+            <div class="card slide-up">
+                <h2>Grammar Reference</h2>
+                <p>Learn about different grammar points through our clear and simple explanations.</p>
+            </div>
+            
+            <button class="collapsible slide-up delay-1">Verb Tenses</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Verb Tenses</h3>
+                    <p>Understand when and how to use different verb tenses in English.</p>
+                    
+                    <h4>Present Simple</h4>
+                    <p>Used for habits, general truths, and permanent situations.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> Subject + base form of verb (add 's' for third person singular)</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>I <em>work</em> at a bank.</li>
+                            <li>She <em>lives</em> in London.</li>
+                            <li>The sun <em>rises</em> in the east.</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Present Continuous</h4>
+                    <p>Used for actions happening now or around now, and future arrangements.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> Subject + am/is/are + present participle (-ing form)</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>I <em>am studying</em> English now.</li>
+                            <li>They <em>are playing</em> football at the moment.</li>
+                            <li>We <em>are meeting</em> John tomorrow.</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Past Simple</h4>
+                    <p>Used for completed actions in the past.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> Subject + past form of verb</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>I <em>visited</em> Paris last year.</li>
+                            <li>She <em>finished</em> her homework an hour ago.</li>
+                            <li>They <em>went</em> to the cinema yesterday.</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Present Perfect</h4>
+                    <p>Used for experiences, changes, and continuing situations.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> Subject + have/has + past participle</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>I <em>have seen</em> that movie three times.</li>
+                            <li>She <em>has lived</em> here since 2010.</li>
+                            <li>They <em>have just arrived</em>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="collapsible slide-up delay-2">Modals</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Modals</h3>
+                    <p>Master the use of modal verbs to express ability, permission, obligation and more.</p>
+                    
+                    <h4>Can, Could, Be Able To</h4>
+                    <p>Used to express ability, possibility, permission, and requests.</p>
+                    <div class="example">
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>I <em>can</em> swim. (ability)</li>
+                            <li><em>Could</em> you help me? (polite request)</li>
+                            <li>She <em>was able to</em> finish on time. (past ability)</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>May, Might</h4>
+                    <p>Used to express possibility and permission.</p>
+                    <div class="example">
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>It <em>may</em> rain tomorrow. (possibility)</li>
+                            <li><em>Might</em> I borrow your pen? (formal permission)</li>
+                            <li>We <em>might</em> go to the beach if it's sunny. (uncertain plan)</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Must, Have To</h4>
+                    <p>Used to express obligation and necessity.</p>
+                    <div class="example">
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>You <em>must</em> wear a seatbelt. (strong obligation)</li>
+                            <li>I <em>have to</em> finish this report today. (external obligation)</li>
+                            <li>She <em>must</em> be tired after that long trip. (logical certainty)</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="collapsible slide-up delay-3">Conditionals</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Conditionals</h3>
+                    <p>Learn how to talk about real and unreal situations using conditional sentences.</p>
+                    
+                    <h4>Zero Conditional</h4>
+                    <p>Used for general truths and facts.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> If + present simple, present simple</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>If you <em>heat</em> ice, it <em>melts</em>.</li>
+                            <li>If people <em>don't eat</em>, they <em>get</em> hungry.</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>First Conditional</h4>
+                    <p>Used for real and possible situations in the future.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> If + present simple, will + base verb</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>If it <em>rains</em> tomorrow, we <em>will cancel</em> the picnic.</li>
+                            <li>If you <em>study</em> hard, you <em>will pass</em> the exam.</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Second Conditional</h4>
+                    <p>Used for unreal or improbable situations in the present or future.</p>
+                    <div class="example">
+                        <p><strong>Structure:</strong> If + past simple, would + base verb</p>
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li>If I <em>won</em> the lottery, I <em>would travel</em> around the world.</li>
+                            <li>If I <em>were</em> you, I <em>would apologize</em>.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Vocabulary Main Page -->
+        <section id="vocabulary" class="page">
+            <h1 class="fade-in">English Vocabulary</h1>
+            <div class="card slide-up">
+                <h2>Vocabulary Building</h2>
+                <p>Expand your vocabulary with our themed word lists and usage examples.</p>
+            </div>
+            
+            <button class="collapsible slide-up delay-1">Common Topics</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Common Topics</h3>
+                    <p>Essential vocabulary for everyday situations and conversations.</p>
+                    
+                    <h4>Work and Jobs</h4>
+                    <p>Essential vocabulary for the workplace and career-related discussions.</p>
+                    <div class="example">
+                        <p><strong>Key Terms:</strong></p>
+                        <ul class="detail-list">
+                            <li><strong>Resume/CV</strong> - A document listing your qualifications and work experience</li>
+                            <li><strong>Interview</strong> - A formal meeting to assess a job applicant</li>
+                            <li><strong>Deadline</strong> - The latest time by which something must be done</li>
+                            <li><strong>Promotion</strong> - Advancement to a higher-level position</li>
+                            <li><strong>Colleague</strong> - A person you work with</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Travel and Tourism</h4>
+                    <p>Vocabulary useful for traveling and visiting places.</p>
+                    <div class="example">
+                        <p><strong>Key Terms:</strong></p>
+                        <ul class="detail-list">
+                            <li><strong>Boarding pass</strong> - Document allowing you to board a plane</li>
+                            <li><strong>Itinerary</strong> - A planned route or journey</li>
+                            <li><strong>Sightseeing</strong> - Visiting places of interest</li>
+                            <li><strong>Accommodation</strong> - A place where travelers can stay</li>
+                            <li><strong>Currency exchange</strong> - Converting money from one currency to another</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Food and Drink</h4>
+                    <p>Vocabulary related to eating and drinking.</p>
+                    <div class="example">
+                        <p><strong>Key Terms:</strong></p>
+                        <ul class="detail-list">
+                            <li><strong>Appetizer</strong> - A small dish before the main course</li>
+                            <li><strong>Beverage</strong> - A drink</li>
+                            <li><strong>Dessert</strong> - Sweet food eaten after a meal</li>
+                            <li><strong>Ingredients</strong> - Items used to prepare a dish</li>
+                            <li><strong>Recipe</strong> - Instructions for preparing food</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="collapsible slide-up delay-2">Word Types</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Word Types</h3>
+                    <p>Different categories of words and how to use them effectively.</p>
+                    
+                    <h4>Phrasal Verbs</h4>
+                    <p>Verbs combined with prepositions or adverbs that create new meanings.</p>
+                    <div class="example">
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li><strong>Give up</strong> - To stop doing something</li>
+                            <li><strong>Look after</strong> - To take care of someone/something</li>
+                            <li><strong>Put off</strong> - To postpone</li>
+                            <li><strong>Take after</strong> - To resemble a family member</li>
+                            <li><strong>Turn down</strong> - To refuse an offer</li>
+                        </ul>
+                    </div>
+                    
+                    <h4>Idioms</h4>
+                    <p>Expressions with meanings that can't be deduced from the individual words.</p>
+                    <div class="example">
+                        <p><strong>Examples:</strong></p>
+                        <ul class="detail-list">
+                            <li><strong>Break a leg</strong> - Good luck</li>
+                            <li><strong>Hit the sack</strong> - Go to bed</li>
+                            <li><strong>Let the cat out of the bag</strong> - Reveal a secret</li>
+                            <li><strong>Once in a blue moon</strong> - Very rarely</li>
+                            <li><strong>Under the weather</strong> - Feeling ill</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="collapsible slide-up delay-3">Vocabulary Tips</button>
+            <div class="content">
+                <div class="content-inner">
+                    <h3>Vocabulary Tips</h3>
+                    <p>Effective strategies for learning and remembering new words.</p>
+                    
+                    <h4>Learn Words in Context</h4>
+                    <p>Instead of memorizing isolated words, learn them in sentences or phrases. This helps you understand how they're actually used.</p>
+                    
+                    <h4>Use Flashcards</h4>
+                    <p>Create flashcards with the word on one side and definition/example on the other. Review them regularly using spaced repetition.</p>
+                    
+                    <h4>Practice Using New Words</h4>
+                    <p>Try to use new words in sentences soon after learning them. Writing or speaking practice helps cement them in your memory.</p>
+                    
+                    <h4>Group Related Words</h4>
+                    <p>Learn words in thematic groups (e.g., all kitchen items, all emotions). This creates mental connections that aid recall.</p>
+                    
+                    <h4>Read Extensively</h4>
+                    <p>Reading exposes you to vocabulary in natural contexts. Choose materials at your level and note down new words to look up later.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 LearnEnglish. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Main navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            const pages = document.querySelectorAll('.page');
+            
+            // Collapsible sections
+            const collapsibles = document.querySelectorAll('.collapsible');
+            
+            // Function to handle main navigation
+            function navigate(e) {
+                e.preventDefault();
+                const targetPage = this.getAttribute('data-page');
+                
+                // Update active state on navigation links
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('data-page') === targetPage) {
+                        link.classList.add('active');
+                    }
+                });
+                
+                // Hide all pages
+                pages.forEach(page => {
+                    page.classList.remove('active');
+                });
+                
+                // Show the target page
+                document.getElementById(targetPage).classList.add('active');
+                
+                // Close all collapsible sections when switching pages
+                collapsibles.forEach(coll => {
+                    coll.classList.remove('active');
+                    const content = coll.nextElementSibling;
+                    content.style.maxHeight = null;
+                });
+                
+                // Scroll to top
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            }
+            
+            // Add click event listeners for navigation
+            navLinks.forEach(link => {
+                link.addEventListener('click', navigate);
+            });
+            
+            // Collapsible functionality
+            collapsibles.forEach(coll => {
+                coll.addEventListener('click', function() {
+                    this.classList.toggle('active');
+                    const content = this.nextElementSibling;
+                    if (content.style.maxHeight) {
+                        content.style.maxHeight = null;
+                    } else {
+                        content.style.maxHeight = content.scrollHeight + 'px';
+                    } 
+                });
+            });
+            
+            // Animation on scroll
+            const animateOnScroll = function() {
+                const cards = document.querySelectorAll('.card, .collapsible');
+                const windowHeight = window.innerHeight;
+                
+                cards.forEach(card => {
+                    const cardPosition = card.getBoundingClientRect().top;
+                    const animationPoint = windowHeight * 0.8;
+                    
+                    if (cardPosition < animationPoint) {
+                        card.classList.add('slide-up');
+                    }
+                });
+            };
+            
+            // Initialize animations
+            animateOnScroll();
+            window.addEventListener('scroll', animateOnScroll);
+        });
+    </script>
+</body>
+</html>
